@@ -11,6 +11,7 @@ public class Menu extends JMenuBar{
 		menu = new JMenu("The best Menu");
 		menuBar.add(menu);
 	}
+	// this is shit
 	
 	
 }
