@@ -2,9 +2,10 @@ package mines;
 
 import java.awt.BorderLayout;
 
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-
+//import javax.swing.JMenuBar;
 
 public class Mines extends JFrame {
 
@@ -23,6 +24,8 @@ public class Mines extends JFrame {
         setSize(WIDTH, HEIGHT);
         setLocationRelativeTo(null);
         setTitle("Minesweeper");
+        
+        setJMenuBar(Menu.create());
         
         statusbar = new JLabel("");
         add(statusbar, BorderLayout.SOUTH);
