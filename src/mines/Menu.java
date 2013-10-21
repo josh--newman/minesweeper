@@ -20,6 +20,12 @@ public class Menu extends JMenuBar{
 		JMenuItem undo = new JMenuItem("Undo");
 		JMenuItem redo = new JMenuItem("Redo");
 		
+		// Create 'difficulty' menu and items
+		JMenu difficultyMenu = new JMenu("Difficulty");
+		JMenuItem easy = new JMenuItem("Easy");
+		JMenuItem medium = new JMenuItem("Medium");
+		JMenuItem hard = new JMenuItem("Hard");
+		
 		// Add FILE items to menu
 		fileMenu.add(newGame);
 		fileMenu.add(saveGame);
@@ -31,10 +37,15 @@ public class Menu extends JMenuBar{
 		// Add EDIT items to menu
 		editMenu.add(undo);
 		editMenu.add(redo);
+		// Add DIFFICULTY items to menu
+		difficultyMenu.add(easy);
+		difficultyMenu.add(medium);
+		difficultyMenu.add(hard);
 		
 		// Add each menu to menuBar
 		menuBar.add(fileMenu);
 		menuBar.add(editMenu);
+		menuBar.add(difficultyMenu);
 		return menuBar;
 	}
 }
