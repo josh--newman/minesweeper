@@ -17,6 +17,7 @@ public class Mines extends JFrame {
     private final int HEIGHT = 800;
 
     private JLabel statusbar;
+    private Board board;
     
     public Mines(String diff) {
     	
@@ -29,7 +30,7 @@ public class Mines extends JFrame {
         statusbar = new JLabel("");
         add(statusbar, BorderLayout.SOUTH);
         
-        Board board = new Board(statusbar, diff);
+        board = new Board(statusbar, diff);
         System.out.println("Board size: " + board.getSize());
         add(board);
         setSize(board.getSize());
@@ -38,6 +39,9 @@ public class Mines extends JFrame {
         setVisible(true);
     }
     
+    public Board getBoard() {
+    	return board;
+    }
     
     public static void main(String[] args) {
         new Mines("easy");
