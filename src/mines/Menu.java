@@ -114,7 +114,7 @@ class EasyDiffAction extends AbstractAction {
 	public void actionPerformed(ActionEvent e) {
 		// close current frame
 		// open new game with easy difficulty
-		new Mines("easy");
+		CurrentGame.getCurrentGame().newMineGame("easy");
 	}
 }
 
@@ -126,7 +126,7 @@ class MediumDiffAction extends AbstractAction {
 		// close current frame
 		
 		// open new game with medium difficulty
-		new Mines("medium");
+		CurrentGame.getCurrentGame().newMineGame("medium");
 	}
 }
 	
@@ -137,6 +137,6 @@ class HardDiffAction extends AbstractAction {
 	public void actionPerformed(ActionEvent e) {
 		// close current frame
 		// open new game with hard difficulty
-		new Mines("hard");
+		CurrentGame.getCurrentGame().newMineGame("hard");
 	}
 }	

@@ -33,17 +33,23 @@ public class Mines extends JFrame {
         board = new Board(statusbar, diff);
         System.out.println("Board size: " + board.getSize());
         add(board);
-        setSize(board.getSize());
-        
-        setResizable(false);
+        setPreferredSize(board.getSize());
+        pack();
+        setResizable(true);
         setVisible(true);
     }
     
-    public Board getBoard() {
-    	return board;
+    public void newMineGame(String diff) {
+    	remove(board);
+    	board = new Board(statusbar, diff);
+    	add(board);
+    	setPreferredSize(board.getSize());
+    	validate();
+    	repaint();
+    	pack();
     }
     
     public static void main(String[] args) {
-        new Mines("easy");
+        CurrentGame.setCurrentGame(new Mines("easy"));
     }
 }
