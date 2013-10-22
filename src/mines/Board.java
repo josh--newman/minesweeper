@@ -88,7 +88,7 @@ public class Board extends JPanel {
     }
 
 
-    public void newGame() {
+	public void newGame() {
 
         Random random;
         int current_col;
@@ -288,6 +288,22 @@ public class Board extends JPanel {
             statusbar.setText("Game won");
         } else if (!inGame)
             statusbar.setText("Game lost");
+    }
+    
+    public int[] getField() {
+    	return field;
+    }
+    
+    public void setField(int[] field) {
+    	this.field = field;
+    }
+    
+    public int getNumMines() {
+    	return mines_left;
+    }
+    
+    public void setMinesLeft(int minesLeft) {
+    	this.mines_left = minesLeft;
     }
 
 
