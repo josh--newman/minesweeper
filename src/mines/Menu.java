@@ -46,6 +46,7 @@ public class Menu extends JMenuBar{
 		menuBar.add(fileMenu);
 		menuBar.add(editMenu);
 		menuBar.add(difficultyMenu);
+		
 		return menuBar;
 	}
 }
