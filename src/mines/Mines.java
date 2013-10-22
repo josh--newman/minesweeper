@@ -13,15 +13,14 @@ public class Mines extends JFrame {
 	 * 
 	 */
     private static final long serialVersionUID = 1L;
-	private final int WIDTH = 245;
-    private final int HEIGHT = 300;
+	private final int WIDTH = 800;
+    private final int HEIGHT = 800;
 
     private JLabel statusbar;
     
-    public Mines() {
-
+    public Mines(String diff) {
+    	
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(WIDTH, HEIGHT);
         setLocationRelativeTo(null);
         setTitle("Minesweeper");
         
@@ -30,13 +29,17 @@ public class Mines extends JFrame {
         statusbar = new JLabel("");
         add(statusbar, BorderLayout.SOUTH);
         
-        add(new Board(statusbar));
+        Board board = new Board(statusbar, diff);
+        System.out.println("Board size: " + board.getSize());
+        add(board);
+        setSize(board.getSize());
         
         setResizable(false);
         setVisible(true);
     }
     
+    
     public static void main(String[] args) {
-        new Mines();
+        new Mines("easy");
     }
 }
