@@ -1,11 +1,11 @@
 
 package mines;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import java.util.Random;
 
 import javax.swing.BorderFactory;
@@ -21,6 +21,14 @@ public class Board extends JPanel {
     private static final long serialVersionUID = 1L;
 	private final int NUM_IMAGES = 13;
     private final int CELL_SIZE = 15;
+    private final double PERCENTAGE_OF_MINES = 0.15;
+    
+    // The number of the rows and columns for each difficulty level
+    private final int EASY_NUM = 16;
+    private final int MEDIUM_NUM = 28;
+    private final int HARD_NUM = 48;
+    
+    private final int STATUS_SIZE = 60;
 
     private final int COVER_FOR_CELL = 10;
     private final int MARK_FOR_CELL = 10;
@@ -38,16 +46,32 @@ public class Board extends JPanel {
     private boolean inGame;
     private int mines_left;
     private Image[] img;
-    private int mines = 40;
-    private int rows = 16;
-    private int cols = 16;
+    private int mines;
+    private int rows;
+    private int cols;
     private int all_cells;
     private JLabel statusbar;
 
 
-    public Board(JLabel statusbar) {
+    public Board(JLabel statusbar, String difficulty) {
 
-        this.statusbar = statusbar;
+        if (difficulty.equals("easy")) {
+        	rows = EASY_NUM;
+        	cols = EASY_NUM;
+        } else if (difficulty.equals("medium")) {
+        	rows = MEDIUM_NUM;
+        	cols = MEDIUM_NUM;
+        } else if (difficulty.equals("hard")) {
+        	rows = HARD_NUM;
+        	cols = HARD_NUM;
+        }
+        
+        setSize(new Dimension((cols*CELL_SIZE),(rows*CELL_SIZE) + STATUS_SIZE));
+        
+        mines = (int)Math.round((rows * cols) * PERCENTAGE_OF_MINES);
+        System.out.println("Number of mines: " + mines);
+    	
+    	this.statusbar = statusbar;
 
         img = new Image[NUM_IMAGES];
 
