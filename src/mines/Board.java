@@ -44,7 +44,7 @@ public class Board extends JPanel {
 
     private int[] field;
     private boolean inGame;
-    private boolean gameSolved;
+    private boolean gameSolved = false;
     private int mines_left;
     private Image[] img;
     private int mines;
