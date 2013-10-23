@@ -44,6 +44,7 @@ public class Board extends JPanel {
 
     private int[] field;
     private boolean inGame;
+    private boolean gameSolved;
     private int mines_left;
     private Image[] img;
     private int mines;
@@ -166,7 +167,14 @@ public class Board extends JPanel {
         }
     }
 
-
+	public void solveGame() {
+		for (int i = 0; i < field.length; i++) {
+			field[i] -= COVER_FOR_CELL;
+		}
+		gameSolved = true;
+		repaint();
+	}
+	
     public void find_empty_cells(int j) {
 
         int current_col = j % cols;
@@ -286,8 +294,11 @@ public class Board extends JPanel {
         if (uncover == 0 && inGame) {
             inGame = false;
             statusbar.setText("Game won");
-        } else if (!inGame)
+        } else if (!inGame && !gameSolved) {
             statusbar.setText("Game lost");
+        } else if (!inGame && gameSolved) {
+        	statusbar.setText("Game solved");
+        }
     }
     
     public int[] getField() {

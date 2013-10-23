@@ -103,6 +103,7 @@ class SolveGameAction extends AbstractAction {
 	}
 	public void actionPerformed(ActionEvent e) {
 		// call solve game method here
+		CurrentGame.getCurrentGame().getBoard().solveGame();
 	}
 }
 	
