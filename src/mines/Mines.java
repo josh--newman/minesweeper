@@ -49,6 +49,10 @@ public class Mines extends JFrame {
     	pack();
     }
     
+    public Board getBoard() {
+    	return board;
+    }
+    
     public static void main(String[] args) {
         CurrentGame.setCurrentGame(new Mines("easy"));
     }
