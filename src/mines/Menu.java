@@ -64,7 +64,7 @@ class NewGameAction extends AbstractAction {
 	}
 	public void actionPerformed(ActionEvent e) {
 		// call create a new game method here
-		CurrentGame.getCurrentGame().newMineGame("easy");
+		CurrentGame.getCurrentGame().newMineGame();
 	}
 }
 
@@ -115,7 +115,8 @@ class EasyDiffAction extends AbstractAction {
 	public void actionPerformed(ActionEvent e) {
 		// close current frame
 		// open new game with easy difficulty
-		CurrentGame.getCurrentGame().newMineGame("easy");
+		CurrentGame.getCurrentGame().setDifficulty("easy");
+		CurrentGame.getCurrentGame().newMineGame();
 	}
 }
 
@@ -125,9 +126,9 @@ class MediumDiffAction extends AbstractAction {
 	}
 	public void actionPerformed(ActionEvent e) {
 		// close current frame
-		
 		// open new game with medium difficulty
-		CurrentGame.getCurrentGame().newMineGame("medium");
+		CurrentGame.getCurrentGame().setDifficulty("medium");
+		CurrentGame.getCurrentGame().newMineGame();
 	}
 }
 	
@@ -138,6 +139,7 @@ class HardDiffAction extends AbstractAction {
 	public void actionPerformed(ActionEvent e) {
 		// close current frame
 		// open new game with hard difficulty
-		CurrentGame.getCurrentGame().newMineGame("hard");
+		CurrentGame.getCurrentGame().setDifficulty("hard");
+		CurrentGame.getCurrentGame().newMineGame();
 	}
 }	
