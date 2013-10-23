@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Time;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
@@ -59,14 +60,6 @@ public class Board extends JPanel {
     private Timer timer;
     private int timeElapsed = 0;
     
-    private ActionListener timerListener = new ActionListener() {
-    	public void actionPerformed(ActionEvent evt) {
-    		statusbar.setText(String.valueOf(timeElapsed));
-    		timeElapsed++;
-    	}
-    };
-
-
     public Board(JLabel statusbar, String difficulty) {
     	
     	// set the columns and rows to determine board size
@@ -88,7 +81,7 @@ public class Board extends JPanel {
         // set the dimension of the board and extra room for the status bar
         setSize(new Dimension((cols*CELL_SIZE),(rows*CELL_SIZE) + STATUS_SIZE));
         
-        // initialise timer and add it to the status bar
+        // initialise timer and time
         timer = new Timer(1000, timerListener);
     	
     	this.statusbar = statusbar;
@@ -106,6 +99,13 @@ public class Board extends JPanel {
         addMouseListener(new MinesAdapter());
         newGame();
     }
+    
+    ActionListener timerListener = new ActionListener() {
+    	public void actionPerformed(ActionEvent evt) {
+    		statusbar.setText(String.valueOf(timeElapsed));
+    		timeElapsed++;
+    	}
+    };
 
 
 	public void newGame() {
@@ -336,6 +336,10 @@ public class Board extends JPanel {
     
     public void setMinesLeft(int minesLeft) {
     	this.mines_left = minesLeft;
+    }
+    
+    public Timer getTimer() {
+    	return timer;
     }
 
     class MinesAdapter extends MouseAdapter {
