@@ -64,7 +64,7 @@ class NewGameAction extends AbstractAction {
 	}
 	public void actionPerformed(ActionEvent e) {
 		// call create a new game method here
-		System.out.println("New game item pressed");
+		CurrentGame.getCurrentGame().newMineGame("easy");
 	}
 }
 
