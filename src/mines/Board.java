@@ -6,7 +6,9 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 import java.util.Random;
+import java.util.Stack;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -249,7 +251,7 @@ public class Board extends JPanel {
         }
 
     }
-
+    
     public void paint(Graphics g) {
 
         int cell = 0;
@@ -317,7 +319,33 @@ public class Board extends JPanel {
     	this.mines_left = minesLeft;
     }
 
-
+    
+    // UNDO AND REDO METHODS
+    public void undo() {
+    	int[] arr = UndoRedo.undo();
+    	System.out.println("Undo Array length: " + arr.length);
+    	// cover each mine that matches the indexes in the array
+    	for (int i = 0, j = 0; i < field.length && j < arr.length; i++) {
+    		if(arr[j] == i) {
+    			field[i] += COVER_FOR_CELL;
+    			j++;
+    		}
+    		repaint();
+    	}
+    }
+    
+    public void redo() {
+    	int[] arr = UndoRedo.redo();
+    	// uncover each mine that matches the indexes in the array
+    	for (int i = 0,j = 0; i < field.length && j < arr.length; i++) {
+    		if(arr[j] == i) {
+    			field[i] -= COVER_FOR_CELL;
+    			j++;
+    		}
+    		repaint();
+    	}
+    }
+    
     class MinesAdapter extends MouseAdapter {
         public void mousePressed(MouseEvent e) {
 
@@ -381,6 +409,31 @@ public class Board extends JPanel {
                     repaint();
 
             }
+            	//for loop to get uncovered squares
+            int count = 0;
+            
+            // finds the number of uncovered mines on the board
+        	for (int i = 0; i < field.length; i++) {
+        		if(field[i] >= EMPTY_CELL && field[i] < MINE_CELL) {
+        			count++;
+        		}
+        	}
+        	
+        	System.out.println("Count: " + count);
+        	
+        	// sets up an array with the number of uncovered squares
+            int[] uncovered = new int[count];
+            
+            
+            // get the index of the uncovered squares and puts it in the array
+            for (int i = 0, j = 0; i < field.length; i++) {
+        		if(field[i] >= EMPTY_CELL && field[i] < MINE_CELL) {
+        			uncovered[j] = i;
+        			j++;
+        		}
+            }
+            System.out.println("Uncovered array: " + (Arrays.toString(uncovered)));
+            UndoRedo.undoStack.push(uncovered);
         }
     }
 }

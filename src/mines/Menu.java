@@ -21,8 +21,8 @@ public class Menu {
 		
 		// Create 'edit' menu and items
 		JMenu editMenu = new JMenu("Edit");
-		JMenuItem undo = new JMenuItem("Undo");
-		JMenuItem redo = new JMenuItem("Redo");
+		JMenuItem undo = new JMenuItem(new UndoAction("Undo"));
+		JMenuItem redo = new JMenuItem(new RedoAction("Redo"));
 		
 		// Create 'difficulty' menu and items
 		JMenu difficultyMenu = new JMenu("Difficulty");
@@ -104,6 +104,27 @@ class SolveGameAction extends AbstractAction {
 	public void actionPerformed(ActionEvent e) {
 		// call solve game method here
 		CurrentGame.getCurrentGame().getBoard().solveGame();
+	}
+}
+
+// UNDO REDO MENU ACTIONS
+class UndoAction extends AbstractAction {
+	public UndoAction(String text) {
+		super(text);
+	}
+	public void actionPerformed(ActionEvent e) {
+		// call solve game method here
+		CurrentGame.getCurrentGame().getBoard().undo();
+	}
+}
+
+class RedoAction extends AbstractAction {
+	public RedoAction(String text) {
+		super(text);
+	}
+	public void actionPerformed(ActionEvent e) {
+		// call solve game method here
+		CurrentGame.getCurrentGame().getBoard().redo();
 	}
 }
 	
