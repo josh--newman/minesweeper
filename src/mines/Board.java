@@ -58,7 +58,7 @@ public class Board extends JPanel {
 
     private int[] field;
     private boolean inGame;
-    private int chancesLeft = 2;
+    private int chancesLeft;
     private boolean gameSolved = false;
     private int mines_left;
     private Image[] img;
@@ -127,6 +127,7 @@ public class Board extends JPanel {
 		
 		stack = new UndoRedoStack();
 
+		chancesLeft = 2;
         inGame = true;
         timer.start();
         mines_left = bigMines + smallMines;
@@ -138,9 +139,10 @@ public class Board extends JPanel {
             field[i] = COVER_FOR_CELL;
 
         statusbar.setText(Integer.toString(mines_left));
-
-        placeMines(SMALL_COVERED_MINE_CELL, BIG_COVERED_MINE_CELL, bigMines);
+        
         placeMines(BIG_COVERED_MINE_CELL, SMALL_COVERED_MINE_CELL, smallMines);
+        placeMines(SMALL_COVERED_MINE_CELL, BIG_COVERED_MINE_CELL, bigMines);
+        
     }
 	
 	private void placeMines(int COVERED_MINE_CELL, int OTHER, int numMines) {
@@ -294,12 +296,15 @@ public class Board extends JPanel {
 
         int cell = 0;
         int uncover = 0;
-
+        
+        System.out.println("FIELD BEFORE PAINT: " + Arrays.toString(field));
+//        System.out.println("inGame before 2mine check: " + inGame);
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
 
                 cell = field[(i * cols) + j];
+                
 
                 if (inGame && cell == BIG_MINE_CELL)
                     inGame = false;
@@ -307,7 +312,6 @@ public class Board extends JPanel {
                 if (chancesLeft == 0) {
                 	inGame = false;
                 }
-                	
 
                 if (!inGame) {
                     if (cell == SMALL_COVERED_MINE_CELL) {
@@ -336,6 +340,9 @@ public class Board extends JPanel {
                     (i * CELL_SIZE), this);
             }
         }
+//        System.out.println("inGame after 2mine check: " + inGame);
+//        System.out.println("chancesLeft: " + chancesLeft);
+        System.out.println("FIELD AFTER PAINT: " + Arrays.toString(field));
 
 
         if (uncover == 0 && inGame) {
@@ -436,7 +443,7 @@ public class Board extends JPanel {
                         return;
                     }
 
-                    if ((field[(cRow * cols) + cCol] > SMALL_MINE_CELL) &&
+                    if ((field[(cRow * cols) + cCol] > BIG_MINE_CELL) &&
                         (field[(cRow * cols) + cCol] < MARKED_MINE_CELL)) {
 
                         field[(cRow * cols) + cCol] -= COVER_FOR_CELL;
