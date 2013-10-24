@@ -27,7 +27,7 @@ public class Board extends JPanel {
 	 * 
 	 */
     private static final long serialVersionUID = 1L;
-	private final int NUM_IMAGES = 13;
+	private final int NUM_IMAGES = 14;
     private final int CELL_SIZE = 15;
     private final double PERCENTAGE_OF_MINES = 0.15;
     private final int TIMER_DELAY = 1000;
@@ -39,17 +39,19 @@ public class Board extends JPanel {
     
     private final int STATUS_SIZE = 60;
 
-    private final int COVER_FOR_CELL = 10;
-    private final int MARK_FOR_CELL = 10;
+    private final int COVER_FOR_CELL = 11;
+    private final int MARK_FOR_CELL = 11;
     private final int EMPTY_CELL = 0;
-    private final int MINE_CELL = 9;
-    private final int COVERED_MINE_CELL = MINE_CELL + COVER_FOR_CELL;
-    private final int MARKED_MINE_CELL = COVERED_MINE_CELL + MARK_FOR_CELL;
+    private final int SMALL_MINE_CELL = 9;
+    private final int BIG_MINE_CELL = 10;
+    private final int SMALL_COVERED_MINE_CELL = SMALL_MINE_CELL + COVER_FOR_CELL;
+    private final int BIG_COVERED_MINE_CELL = BIG_MINE_CELL + COVER_FOR_CELL;
+    private final int MARKED_MINE_CELL = BIG_COVERED_MINE_CELL + MARK_FOR_CELL;
 
     private final int DRAW_MINE = 9;
-    private final int DRAW_COVER = 10;
-    private final int DRAW_MARK = 11;
-    private final int DRAW_WRONG_MARK = 12;
+    private final int DRAW_COVER = 11;
+    private final int DRAW_MARK = 12;
+    private final int DRAW_WRONG_MARK = 13;
 
     private int[] field;
     private boolean inGame;
@@ -117,15 +119,7 @@ public class Board extends JPanel {
 	public void newGame() {
 		
 		stack = new UndoRedoStack();
-		
-        Random random;
-        int current_col;
 
-        int i = 0;
-        int position = 0;
-        int cell = 0;
-
-        random = new Random();
         inGame = true;
         timer.start();
         mines_left = mines;
@@ -133,12 +127,23 @@ public class Board extends JPanel {
         all_cells = rows * cols;
         field = new int[all_cells];
         
-        for (i = 0; i < all_cells; i++)
+        for (int i = 0; i < all_cells; i++)
             field[i] = COVER_FOR_CELL;
 
         statusbar.setText(Integer.toString(mines_left));
 
-
+        placeMines(BIG_MINE_CELL);
+        placeMines(SMALL_MINE_CELL);
+    }
+	
+	private void placeMines(int mineSize) {
+		int i = 0;
+        int position = 0;
+        int cell = 0;
+        
+        Random random = new Random();
+        int current_col;
+        
         i = 0;
         while (i < mines) {
 
@@ -193,8 +198,8 @@ public class Board extends JPanel {
                 }
             }
         }
-    }
-
+	}
+	
 	public void solveGame() {
 		for (int i = 0; i < field.length; i++) {
 			field[i] -= COVER_FOR_CELL;
