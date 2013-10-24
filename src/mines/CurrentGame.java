@@ -10,5 +10,4 @@ public class CurrentGame {
 	public static Mines getCurrentGame() {
 		return currentGame;
 	}
-	
 }

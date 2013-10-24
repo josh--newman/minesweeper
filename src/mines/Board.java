@@ -4,9 +4,15 @@ package mines;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+<<<<<<< HEAD
 import java.util.Arrays;
+=======
+import java.sql.Time;
+>>>>>>> jmines/master
 import java.util.Random;
 import java.util.Stack;
 
@@ -14,6 +20,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 public class Board extends JPanel {
 
@@ -24,6 +31,7 @@ public class Board extends JPanel {
 	private final int NUM_IMAGES = 13;
     private final int CELL_SIZE = 15;
     private final double PERCENTAGE_OF_MINES = 0.15;
+    private final int TIMER_DELAY = 1000;
     
     // The number of the rows and columns for each difficulty level
     private final int EASY_NUM = 16;
@@ -54,10 +62,12 @@ public class Board extends JPanel {
     private int cols;
     private int all_cells;
     private JLabel statusbar;
-
-
+    private Timer timer;
+    private int timeElapsed = 0;
+    
     public Board(JLabel statusbar, String difficulty) {
-
+    	
+    	// set the columns and rows to determine board size
         if (difficulty.equals("easy")) {
         	rows = EASY_NUM;
         	cols = EASY_NUM;
@@ -69,10 +79,15 @@ public class Board extends JPanel {
         	cols = HARD_NUM;
         }
         
-        setSize(new Dimension((cols*CELL_SIZE),(rows*CELL_SIZE) + STATUS_SIZE));
-        
+        // set number of mines to % based on the number of squares on the board
         mines = (int)Math.round((rows * cols) * PERCENTAGE_OF_MINES);
         System.out.println("Number of mines: " + mines);
+        
+        // set the dimension of the board and extra room for the status bar
+        setSize(new Dimension((cols*CELL_SIZE),(rows*CELL_SIZE) + STATUS_SIZE));
+        
+        // initialise timer and time
+        timer = new Timer(1000, timerListener);
     	
     	this.statusbar = statusbar;
 
@@ -85,10 +100,17 @@ public class Board extends JPanel {
         }
 
         setDoubleBuffered(true);
-
+        
         addMouseListener(new MinesAdapter());
         newGame();
     }
+    
+    ActionListener timerListener = new ActionListener() {
+    	public void actionPerformed(ActionEvent evt) {
+    		statusbar.setText(String.valueOf(timeElapsed));
+    		timeElapsed++;
+    	}
+    };
 
 
 	public void newGame() {
@@ -102,6 +124,7 @@ public class Board extends JPanel {
 
         random = new Random();
         inGame = true;
+        timer.start();
         mines_left = mines;
 
         all_cells = rows * cols;
@@ -265,6 +288,7 @@ public class Board extends JPanel {
 
                 if (inGame && cell == MINE_CELL)
                     inGame = false;
+                	
 
                 if (!inGame) {
                     if (cell == COVERED_MINE_CELL) {
@@ -318,6 +342,7 @@ public class Board extends JPanel {
     public void setMinesLeft(int minesLeft) {
     	this.mines_left = minesLeft;
     }
+<<<<<<< HEAD
 
     
     // UNDO AND REDO METHODS
@@ -346,6 +371,13 @@ public class Board extends JPanel {
     	}
     }
     
+=======
+    
+    public Timer getTimer() {
+    	return timer;
+    }
+
+>>>>>>> jmines/master
     class MinesAdapter extends MouseAdapter {
         public void mousePressed(MouseEvent e) {
 
@@ -409,6 +441,7 @@ public class Board extends JPanel {
                     repaint();
 
             }
+<<<<<<< HEAD
             	//for loop to get uncovered squares
             int count = 0;
             
@@ -434,6 +467,12 @@ public class Board extends JPanel {
             }
             System.out.println("Uncovered array: " + (Arrays.toString(uncovered)));
             UndoRedo.undoStack.push(uncovered);
+=======
+            if (!inGame) {
+            	timer.stop();
+            	timeElapsed = 0;
+            }
+>>>>>>> jmines/master
         }
     }
 }

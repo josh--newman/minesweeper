@@ -18,8 +18,9 @@ public class Mines extends JFrame {
 
     private JLabel statusbar;
     private Board board;
+    private String difficulty = "easy";
     
-    public Mines(String diff) {
+    public Mines() {
     	
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -30,7 +31,7 @@ public class Mines extends JFrame {
         statusbar = new JLabel("");
         add(statusbar, BorderLayout.SOUTH);
         
-        board = new Board(statusbar, diff);
+        board = new Board(statusbar, difficulty);
         System.out.println("Board size: " + board.getSize());
         add(board);
         setPreferredSize(board.getSize());
@@ -39,9 +40,10 @@ public class Mines extends JFrame {
         setVisible(true);
     }
     
-    public void newMineGame(String diff) {
+    public void newMineGame() {
+    	board.getTimer().stop();
     	remove(board);
-    	board = new Board(statusbar, diff);
+    	board = new Board(statusbar, difficulty);
     	add(board);
     	setPreferredSize(board.getSize());
     	validate();
@@ -53,7 +55,15 @@ public class Mines extends JFrame {
     	return board;
     }
     
+    public String getDifficulty() {
+    	return difficulty;
+    }
+    
+    public void setDifficulty(String difficulty) {
+    	this.difficulty = difficulty;
+    }
+    
     public static void main(String[] args) {
-        CurrentGame.setCurrentGame(new Mines("easy"));
+        CurrentGame.setCurrentGame(new Mines());
     }
 }

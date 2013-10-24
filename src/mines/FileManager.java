@@ -1,13 +1,16 @@
 package mines;
 
 import java.io.BufferedWriter;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.io.IOException;
+import java.util.Date;
 import java.util.Scanner;
 import java.util.List;
 import java.util.ArrayList;
-import java.io.IOException;
+import java.sql.Time;
 
 public class FileManager {
 
@@ -24,10 +27,16 @@ public class FileManager {
 		}
 		
 		
-		
-		
 		saveItems.flush();
 		saveItems.close();
+	}
+	
+	public static void saveTime(String file, String name, int time, Date date) throws IOException {
+		//print score to file
+		PrintWriter saveScore = new PrintWriter(new BufferedWriter(new FileWriter(file)));
+		
+		time = 
+		saveScore.println(name + " " + time + " " + date);
 	}
 	
 	public static int loadGame(String filename, int[] field, int numMines) throws IOException {
