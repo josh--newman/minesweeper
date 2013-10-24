@@ -61,6 +61,9 @@ public class FileManager {
 		time = CurrentGame.getCurrentGame().getBoard().getTimeElapsed();
 		date = new Date();
 		saveScore.println(name + " " + time + " " + date);
+		
+		saveScore.flush();
+		saveScore.close();
 	}
 	
 	public static String[] loadScores(String filename) throws IOException {
