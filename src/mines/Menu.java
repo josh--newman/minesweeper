@@ -94,6 +94,7 @@ class HighScoresAction extends AbstractAction {
 	}
 	public void actionPerformed(ActionEvent e) {
 		// call display high scores window here
+		new HighScores().setVisible(true);
 	}
 }
 
