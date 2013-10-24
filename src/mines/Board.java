@@ -140,8 +140,8 @@ public class Board extends JPanel {
 
         statusbar.setText(Integer.toString(mines_left));
         
-        placeMines(BIG_COVERED_MINE_CELL, SMALL_COVERED_MINE_CELL, smallMines);
-        placeMines(SMALL_COVERED_MINE_CELL, BIG_COVERED_MINE_CELL, bigMines);
+        placeMines(BIG_COVERED_MINE_CELL, SMALL_COVERED_MINE_CELL, bigMines);
+        placeMines(SMALL_COVERED_MINE_CELL, BIG_COVERED_MINE_CELL, smallMines);
         
     }
 	
@@ -297,7 +297,7 @@ public class Board extends JPanel {
         int cell = 0;
         int uncover = 0;
         
-        System.out.println("FIELD BEFORE PAINT: " + Arrays.toString(field));
+//        System.out.println("FIELD BEFORE PAINT: " + Arrays.toString(field));
 //        System.out.println("inGame before 2mine check: " + inGame);
 
         for (int i = 0; i < rows; i++) {
@@ -316,7 +316,7 @@ public class Board extends JPanel {
                 if (!inGame) {
                     if (cell == SMALL_COVERED_MINE_CELL) {
                         cell = DRAW_SMALL_MINE;
-                    } else if (cell == BIG_COVERED_MINE_CELL) {
+                    } else if (cell == BIG_COVERED_MINE_CELL || cell == BIG_MINE_CELL) {
                     	cell = DRAW_BIG_MINE;
                     } else if (cell == MARKED_MINE_CELL) {
                         cell = DRAW_MARK;
@@ -341,7 +341,7 @@ public class Board extends JPanel {
             }
         }
 //        System.out.println("inGame after 2mine check: " + inGame);
-//        System.out.println("chancesLeft: " + chancesLeft);
+        System.out.println("chancesLeft: " + chancesLeft);
         System.out.println("FIELD AFTER PAINT: " + Arrays.toString(field));
 
 
@@ -451,8 +451,11 @@ public class Board extends JPanel {
 
                         if (field[(cRow * cols) + cCol] == BIG_MINE_CELL)
                             inGame = false;
-                        if (field[(cRow * cols) + cCol] == SMALL_MINE_CELL)
+                        if (field[(cRow * cols) + cCol] == SMALL_MINE_CELL) {
                             chancesLeft--;
+                        	if (chancesLeft == 0)
+                        		inGame = false;
+                        }
                         if (field[(cRow * cols) + cCol] == EMPTY_CELL)
                             find_empty_cells((cRow * cols) + cCol);
                     }
