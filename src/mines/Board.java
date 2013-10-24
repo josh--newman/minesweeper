@@ -341,7 +341,11 @@ public class Board extends JPanel {
     	this.mines_left = minesLeft;
     }
     
-    public int getTimer() {
+    public Timer getTimer() {
+    	return timer;
+    }
+    
+    public int getTimeElapsed() {
     	return timeElapsed;
     }
 
