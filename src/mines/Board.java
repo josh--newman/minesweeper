@@ -8,11 +8,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-<<<<<<< HEAD
+
 import java.util.Arrays;
-=======
+
 import java.sql.Time;
->>>>>>> jmines/master
+
 import java.util.Random;
 import java.util.Stack;
 
@@ -342,7 +342,7 @@ public class Board extends JPanel {
     public void setMinesLeft(int minesLeft) {
     	this.mines_left = minesLeft;
     }
-<<<<<<< HEAD
+
 
     
     // UNDO AND REDO METHODS
@@ -371,13 +371,11 @@ public class Board extends JPanel {
     	}
     }
     
-=======
     
     public Timer getTimer() {
     	return timer;
     }
 
->>>>>>> jmines/master
     class MinesAdapter extends MouseAdapter {
         public void mousePressed(MouseEvent e) {
 
@@ -441,8 +439,13 @@ public class Board extends JPanel {
                     repaint();
 
             }
-<<<<<<< HEAD
-            	//for loop to get uncovered squares
+            
+            if (!inGame) {
+            	timer.stop();
+            	timeElapsed = 0;
+            }
+            
+            //for loop to get uncovered squares
             int count = 0;
             
             // finds the number of uncovered mines on the board
@@ -467,12 +470,8 @@ public class Board extends JPanel {
             }
             System.out.println("Uncovered array: " + (Arrays.toString(uncovered)));
             UndoRedo.undoStack.push(uncovered);
-=======
-            if (!inGame) {
-            	timer.stop();
-            	timeElapsed = 0;
-            }
->>>>>>> jmines/master
+            
+
         }
     }
 }
