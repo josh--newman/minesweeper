@@ -14,6 +14,7 @@ import java.sql.Time;
 
 public class FileManager {
 	
+	private static final int NUMBER_OF_HIGH_SCORES = 5;
 	
 	public static void saveGame(String file, int[] field, int numMines) throws IOException { 
 		//loop through array
@@ -62,17 +63,19 @@ public class FileManager {
 		saveScore.println(name + " " + time + " " + date);
 	}
 	
-	public static String loadScore(String filename) throws IOException {
+	public static String[] loadScores(String filename) throws IOException {
 		//load score from file
 		File file = new File(filename);
 		Scanner fileReader = new Scanner(file);
 		
-		String highScore = "";
+		String[] highScores = new String[NUMBER_OF_HIGH_SCORES];
 		
+		int i = 0;
 		while (fileReader.hasNextLine()) {
-			highScore = fileReader.nextLine();
+			highScores[i] = fileReader.nextLine();
+			i++;
 		}
 		
-		return highScore;
+		return highScores;
 	}
 }
