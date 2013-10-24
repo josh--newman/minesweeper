@@ -10,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import java.sql.Time;
+
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Stack;
@@ -370,7 +371,6 @@ public class Board extends JPanel {
     	repaint();
     }
     
-
     class MinesAdapter extends MouseAdapter {
         public void mousePressed(MouseEvent e) {
         	
@@ -442,35 +442,6 @@ public class Board extends JPanel {
             	timer.stop();
             	timeElapsed = 0;
             }
-
-//            //for loop to get uncovered squares
-//            int count = 0;
-//            
-//            // finds the number of uncovered mines on the board
-//        	for (int i = 0; i < field.length; i++) {
-//        		if(field[i] >= EMPTY_CELL && field[i] < MINE_CELL) {
-//        			count++;
-//        		}
-//        	}
-//        	
-//        	System.out.println("Count: " + count);
-//        	
-//        	// sets up an array with the number of uncovered squares
-//            int[] uncovered = new int[count];
-//            
-//            
-//            // get the index of the uncovered squares and puts it in the array
-//            for (int i = 0, j = 0; i < field.length; i++) {
-//        		if(field[i] >= EMPTY_CELL && field[i] < MINE_CELL) {
-//        			uncovered[j] = i;
-//        			j++;
-//        		}
-//            }
-//            System.out.println("Uncovered array: " + (Arrays.toString(uncovered)));
-//            UndoRedo.undoStack.push(uncovered);
-
-            
-            
         }
     }
 }
