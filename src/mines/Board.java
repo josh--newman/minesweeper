@@ -63,6 +63,8 @@ public class Board extends JPanel {
     private Timer timer;
     private int timeElapsed = 0;
     
+    private UndoRedoStack stack;
+    
     public Board(JLabel statusbar, String difficulty) {
     	
     	// set the columns and rows to determine board size
@@ -85,7 +87,7 @@ public class Board extends JPanel {
         setSize(new Dimension((cols*CELL_SIZE),(rows*CELL_SIZE) + STATUS_SIZE));
         
         // initialise timer and time
-        timer = new Timer(1000, timerListener);
+        timer = new Timer(TIMER_DELAY, timerListener);
     	
     	this.statusbar = statusbar;
 
@@ -112,7 +114,9 @@ public class Board extends JPanel {
 
 
 	public void newGame() {
-
+		
+		stack = new UndoRedoStack();
+		
         Random random;
         int current_col;
 
@@ -354,34 +358,24 @@ public class Board extends JPanel {
     
     // UNDO AND REDO METHODS
     public void undo() {
-    	int[] arr = UndoRedo.undo();
-    	System.out.println("Undo Array length: " + arr.length);
-    	// cover each mine that matches the indexes in the array
-    	for (int i = 0, j = 0; i < field.length && j < arr.length; i++) {
-    		if(arr[j] == i) {
-    			field[i] += COVER_FOR_CELL;
-    			j++;
-    		}
-    		repaint();
-    	}
+    	int[] arr = stack.undo();
+    	field = arr;
+    	repaint();
     }
     
     public void redo() {
-    	int[] arr = UndoRedo.redo();
+    	int[] arr = stack.redo();
     	// uncover each mine that matches the indexes in the array
-    	for (int i = 0,j = 0; i < field.length && j < arr.length; i++) {
-    		if(arr[j] == i) {
-    			field[i] -= COVER_FOR_CELL;
-    			j++;
-    		}
-    		repaint();
-    	}
+    	field = arr;
+    	repaint();
     }
     
 
     class MinesAdapter extends MouseAdapter {
         public void mousePressed(MouseEvent e) {
-
+        	
+        	stack.push(field.clone());
+        	
             int x = e.getX();
             int y = e.getY();
 
@@ -389,7 +383,6 @@ public class Board extends JPanel {
             int cRow = y / CELL_SIZE;
 
             boolean rep = false;
-
 
             if (!inGame) {
                 newGame();
@@ -442,38 +435,42 @@ public class Board extends JPanel {
                     repaint();
 
             }
-
+            
+            stack.setNextRedo(field.clone());
+            
             if (!inGame) {
             	timer.stop();
             	timeElapsed = 0;
             }
 
-            //for loop to get uncovered squares
-            int count = 0;
-            
-            // finds the number of uncovered mines on the board
-        	for (int i = 0; i < field.length; i++) {
-        		if(field[i] >= EMPTY_CELL && field[i] < MINE_CELL) {
-        			count++;
-        		}
-        	}
-        	
-        	System.out.println("Count: " + count);
-        	
-        	// sets up an array with the number of uncovered squares
-            int[] uncovered = new int[count];
-            
-            
-            // get the index of the uncovered squares and puts it in the array
-            for (int i = 0, j = 0; i < field.length; i++) {
-        		if(field[i] >= EMPTY_CELL && field[i] < MINE_CELL) {
-        			uncovered[j] = i;
-        			j++;
-        		}
-            }
-            System.out.println("Uncovered array: " + (Arrays.toString(uncovered)));
-            UndoRedo.undoStack.push(uncovered);
+//            //for loop to get uncovered squares
+//            int count = 0;
+//            
+//            // finds the number of uncovered mines on the board
+//        	for (int i = 0; i < field.length; i++) {
+//        		if(field[i] >= EMPTY_CELL && field[i] < MINE_CELL) {
+//        			count++;
+//        		}
+//        	}
+//        	
+//        	System.out.println("Count: " + count);
+//        	
+//        	// sets up an array with the number of uncovered squares
+//            int[] uncovered = new int[count];
+//            
+//            
+//            // get the index of the uncovered squares and puts it in the array
+//            for (int i = 0, j = 0; i < field.length; i++) {
+//        		if(field[i] >= EMPTY_CELL && field[i] < MINE_CELL) {
+//        			uncovered[j] = i;
+//        			j++;
+//        		}
+//            }
+//            System.out.println("Uncovered array: " + (Arrays.toString(uncovered)));
+//            UndoRedo.undoStack.push(uncovered);
 
+            
+            
         }
     }
 }
