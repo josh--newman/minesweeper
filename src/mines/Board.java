@@ -30,6 +30,8 @@ public class Board extends JPanel {
 	private final int NUM_IMAGES = 14;
     private final int CELL_SIZE = 15;
     private final double PERCENTAGE_OF_MINES = 0.15;
+    private final double PERCENTAGE_OF_BIG_MINES = 0.80;
+    private final double PERCENTAGE_OF_SMALL_MINES = 0.20;
     private final int TIMER_DELAY = 1000;
     
     // The number of the rows and columns for each difficulty level
@@ -58,7 +60,8 @@ public class Board extends JPanel {
     private boolean gameSolved = false;
     private int mines_left;
     private Image[] img;
-    private int mines;
+    private int bigMines;
+    private int smallMines;
     private int rows;
     private int cols;
     private int all_cells;
@@ -83,8 +86,10 @@ public class Board extends JPanel {
         }
         
         // set number of mines to % based on the number of squares on the board
-        mines = (int)Math.round((rows * cols) * PERCENTAGE_OF_MINES);
-        System.out.println("Number of mines: " + mines);
+        bigMines = (int)Math.round((rows * cols) * (PERCENTAGE_OF_MINES * PERCENTAGE_OF_BIG_MINES));
+        smallMines = (int)Math.round((rows * cols) * (PERCENTAGE_OF_MINES * PERCENTAGE_OF_SMALL_MINES));
+        System.out.println("Number of big mines: " + bigMines);
+        System.out.println("Number of small mines: " + smallMines);
         
         // set the dimension of the board and extra room for the status bar
         setSize(new Dimension((cols*CELL_SIZE),(rows*CELL_SIZE) + STATUS_SIZE));
@@ -122,7 +127,7 @@ public class Board extends JPanel {
 
         inGame = true;
         timer.start();
-        mines_left = mines;
+        mines_left = bigMines + smallMines;
 
         all_cells = rows * cols;
         field = new int[all_cells];
@@ -132,11 +137,11 @@ public class Board extends JPanel {
 
         statusbar.setText(Integer.toString(mines_left));
 
-        placeMines(SMALL_COVERED_MINE_CELL);
+        placeMines(SMALL_COVERED_MINE_CELL, );
         placeMines(BIG_COVERED_MINE_CELL);
     }
 	
-	private void placeMines(int MINE_SIZE) {
+	private void placeMines(int COVERED_MINE_CELL, int numMines) {
 		int i = 0;
         int position = 0;
         int cell = 0;
@@ -145,55 +150,55 @@ public class Board extends JPanel {
         int current_col;
         
         i = 0;
-        while (i < mines) {
+        while (i < numMines) {
 
             position = (int) (all_cells * random.nextDouble());
 
             if ((position < all_cells) &&
-                (field[position] != MINE_SIZE)) {
+                (field[position] != COVERED_MINE_CELL)) {
 
 
                 current_col = position % cols;
-                field[position] = MINE_SIZE;
+                field[position] = COVERED_MINE_CELL;
                 i++;
 
                 if (current_col > 0) { 
                     cell = position - 1 - cols;
                     if (cell >= 0)
-                        if (field[cell] != MINE_SIZE)
+                        if (field[cell] != COVERED_MINE_CELL)
                             field[cell] += 1;
                     cell = position - 1;
                     if (cell >= 0)
-                        if (field[cell] != MINE_SIZE)
+                        if (field[cell] != COVERED_MINE_CELL)
                             field[cell] += 1;
 
                     cell = position + cols - 1;
                     if (cell < all_cells)
-                        if (field[cell] != MINE_SIZE)
+                        if (field[cell] != COVERED_MINE_CELL)
                             field[cell] += 1;
                 }
 
                 cell = position - cols;
                 if (cell >= 0)
-                    if (field[cell] != MINE_SIZE)
+                    if (field[cell] != COVERED_MINE_CELL)
                         field[cell] += 1;
                 cell = position + cols;
                 if (cell < all_cells)
-                    if (field[cell] != MINE_SIZE)
+                    if (field[cell] != COVERED_MINE_CELL)
                         field[cell] += 1;
 
                 if (current_col < (cols - 1)) {
                     cell = position - cols + 1;
                     if (cell >= 0)
-                        if (field[cell] != MINE_SIZE)
+                        if (field[cell] != COVERED_MINE_CELL)
                             field[cell] += 1;
                     cell = position + cols + 1;
                     if (cell < all_cells)
-                        if (field[cell] != MINE_SIZE)
+                        if (field[cell] != COVERED_MINE_CELL)
                             field[cell] += 1;
                     cell = position + 1;
                     if (cell < all_cells)
-                        if (field[cell] != MINE_SIZE)
+                        if (field[cell] != COVERED_MINE_CELL)
                             field[cell] += 1;
                 }
             }
