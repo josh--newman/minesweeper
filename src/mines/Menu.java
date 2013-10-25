@@ -101,10 +101,10 @@ class LoadGameAction extends AbstractAction {
 	            chooser.getSelectedFile().getName());
 	       System.out.println("Loaded field: " + Arrays.toString(field));
 	       System.out.println("Loaded numMines: " + numMines);
-		       
+	       		System.out.println("Loading game");
 	       		
 	    }
-		System.out.println("Loading game");
+		
 	}
 }
 
@@ -115,14 +115,14 @@ class SaveGameAction extends AbstractAction {
 	public void actionPerformed(ActionEvent e) {
 		//get file chooser
 		JFileChooser chooser = new JFileChooser();
-		FileFilter ft = new FileNameExtensionFilter(".txt","txt");
+		FileFilter ft = new FileNameExtensionFilter(".txt",".txt");
 		chooser.addChoosableFileFilter(ft);
 		//open file chooser on top of current game
 		chooser.showSaveDialog(CurrentGame.getCurrentGame().getBoard());
 		//ask if its OK to overwrite same named file if applicable
-		JDialog.setDefaultLookAndFeelDecorated(true);
+
 		int response = JOptionPane.showConfirmDialog(null, "Are you sure you want to override existing file?", "Confirm",
-		        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+	        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		    if (response == JOptionPane.NO_OPTION) {
 		      System.out.println("No button clicked");
 		    } else if (response == JOptionPane.YES_OPTION) {
