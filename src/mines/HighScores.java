@@ -102,7 +102,7 @@ public class HighScores extends JFrame {
 	        }
         }
         catch (IOException e) {
-        	System.out.println("WTF");
+        	System.out.println("File not found");
         }
         
         JPanel mediumCard = new JPanel();
@@ -120,7 +120,7 @@ public class HighScores extends JFrame {
 	        }
         }
         catch (IOException e) {
-        	System.out.println("WTF");
+        	System.out.println("File not found");
         }
         
         JPanel hardCard = new JPanel();
@@ -139,7 +139,7 @@ public class HighScores extends JFrame {
 	        }
         }
         catch (IOException e) {
-        	System.out.println("WTF");
+        	System.out.println("File not found");
         }
         cardPanel.add(easyCard, "Easy");
         cardPanel.add(mediumCard, "Medium");

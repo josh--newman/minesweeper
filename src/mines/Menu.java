@@ -2,9 +2,13 @@ package mines;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+import java.util.Arrays;
 
 import javax.swing.*;
 import javax.swing.event.*;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Menu {
 	
@@ -74,7 +78,33 @@ class LoadGameAction extends AbstractAction {
 	}
 	public void actionPerformed(ActionEvent e) {
 		// call load game method here
-		System.out.println("Load game item pressed");
+		JFileChooser chooser = new JFileChooser();
+		FileFilter ft = new FileNameExtensionFilter(".txt","txt");
+		chooser.addChoosableFileFilter(ft);
+		int returnVal = chooser.showOpenDialog(CurrentGame.getCurrentGame().getBoard());
+	    if(returnVal == JFileChooser.APPROVE_OPTION) {
+	    	
+	    	int[] field = {};
+	    	int numMines = 0;
+	    	
+	    	try {
+				int[][] items = FileManager.loadGame(chooser.getSelectedFile().getName());
+				numMines = items[0][0];
+				field = items[1];
+				CurrentGame.getCurrentGame().newMineGame(field, numMines);
+			} catch (IOException ex) {
+				//catch exception
+				ex.printStackTrace();
+			}
+	    
+	       System.out.println("Load game: " +
+	            chooser.getSelectedFile().getName());
+	       System.out.println("Loaded field: " + Arrays.toString(field));
+	       System.out.println("Loaded numMines: " + numMines);
+		       
+	       		
+	    }
+		System.out.println("Loading game");
 	}
 }
 
@@ -83,8 +113,37 @@ class SaveGameAction extends AbstractAction {
 		super(text);
 	}
 	public void actionPerformed(ActionEvent e) {
-		// call save game method here
-		System.out.println("Save game item pressed");
+		//get file chooser
+		JFileChooser chooser = new JFileChooser();
+		FileFilter ft = new FileNameExtensionFilter(".txt","txt");
+		chooser.addChoosableFileFilter(ft);
+		//open file chooser on top of current game
+		chooser.showSaveDialog(CurrentGame.getCurrentGame().getBoard());
+		//ask if its OK to overwrite same named file if applicable
+		JDialog.setDefaultLookAndFeelDecorated(true);
+		int response = JOptionPane.showConfirmDialog(null, "Are you sure you want to override existing file?", "Confirm",
+		        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+		    if (response == JOptionPane.NO_OPTION) {
+		      System.out.println("No button clicked");
+		    } else if (response == JOptionPane.YES_OPTION) {
+		      System.out.println("Yes button clicked");
+		    } else if (response == JOptionPane.CLOSED_OPTION) {
+		      System.out.println("JOptionPane closed");
+		    } 
+
+	    //save current board state and number of mines
+		try {
+			FileManager.saveGame(chooser.getSelectedFile(),
+			CurrentGame.getCurrentGame().getBoard().getField(), 
+			CurrentGame.getCurrentGame().getBoard().getNumMines(),
+			CurrentGame.getCurrentGame().getDifficulty());
+		} catch (IOException e1) {
+			//catch exception
+			e1.printStackTrace();
+		}
+		
+		System.out.println("Game Saved: " + 
+				chooser.getSelectedFile());
 	}
 }
 

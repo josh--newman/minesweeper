@@ -51,6 +51,17 @@ public class Mines extends JFrame {
     	pack();
     }
     
+    public void newMineGame(int[] field, int numMines) {
+    	board.getTimer().stop();
+    	remove(board);
+    	board = new Board(statusbar, field, numMines);
+    	add(board);
+    	setPreferredSize(board.getSize());
+    	validate();
+    	repaint();
+    	pack();
+    }
+    
     public Board getBoard() {
     	return board;
     }
