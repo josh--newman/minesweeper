@@ -453,13 +453,6 @@ public class Board extends JPanel {
         public void mousePressed(MouseEvent e) {
         	
         	
-        	if (stack.isEmpty()) {
-        		stack.push(field.clone());
-        		System.out.print("Pushed first state to stack\n");
-        	} else if (!stack.peek().equals(field.clone())) {
-        		stack.push(field.clone());
-        		System.out.print("Pushed another state to stack\n");
-        	}
         	
             int x = e.getX();
             int y = e.getY();
@@ -472,6 +465,11 @@ public class Board extends JPanel {
             if (!inGame) {
                 newGame();
                 repaint();
+            }
+            
+            if (field[(cRow * cols) + cCol] > BIG_MINE_CELL) {
+            	stack.push(field.clone());
+            	System.out.print("Pushed move to stack\n");
             }
 
 
