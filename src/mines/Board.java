@@ -115,6 +115,57 @@ public class Board extends JPanel {
         newGame();
     }
     
+    public Board(JLabel statusbar, int[] field, int numMines) {
+    	
+    	this.field = field;
+    	this.mines_left = numMines;
+    	
+    	inGame = true;
+    	stack = new UndoRedoStack();
+    	chancesLeft = 2;
+    	all_cells = field.length;
+    	
+    	// set the columns and rows to determine board size
+        if (field.length == EASY_NUM * EASY_NUM) {
+        	rows = EASY_NUM;
+        	cols = EASY_NUM;
+        } else if (field.length == MEDIUM_NUM * MEDIUM_NUM) {
+        	rows = MEDIUM_NUM;
+        	cols = MEDIUM_NUM;
+        } else if (field.length == HARD_NUM * HARD_NUM) {
+        	rows = HARD_NUM;
+        	cols = HARD_NUM;
+        }
+        
+        // set number of mines to % based on the number of squares on the board
+//        bigMines = (int)Math.round((rows * cols) * (PERCENTAGE_OF_MINES * PERCENTAGE_OF_BIG_MINES));
+//        smallMines = (int)Math.round((rows * cols) * (PERCENTAGE_OF_MINES * PERCENTAGE_OF_SMALL_MINES));
+//        System.out.println("Number of big mines: " + bigMines);
+//        System.out.println("Number of small mines: " + smallMines);
+        
+        // set the dimension of the board and extra room for the status bar
+        setSize(new Dimension((cols*CELL_SIZE),(rows*CELL_SIZE) + STATUS_SIZE));
+        
+        // initialise timer and time
+        timer = new Timer(TIMER_DELAY, timerListener);
+    	
+    	this.statusbar = statusbar;
+
+        img = new Image[NUM_IMAGES];
+
+        for (int i = 0; i < NUM_IMAGES; i++) {
+            img[i] =
+                    (new ImageIcon(this.getClass().getResource((i)
+                        + ".png"))).getImage();
+        }
+
+        setDoubleBuffered(true);
+        
+        addMouseListener(new MinesAdapter());
+        validate();
+        repaint();
+    }
+    
     ActionListener timerListener = new ActionListener() {
     	public void actionPerformed(ActionEvent evt) {
     		statusbar.setText(String.valueOf(timeElapsed));
@@ -215,6 +266,7 @@ public class Board extends JPanel {
 				field[i] -= COVER_FOR_CELL;
 		}
 		gameSolved = true;
+		
 		repaint();
 	}
 	
