@@ -452,7 +452,14 @@ public class Board extends JPanel {
     class MinesAdapter extends MouseAdapter {
         public void mousePressed(MouseEvent e) {
         	
-        	stack.push(field.clone());
+        	
+        	if (stack.isEmpty()) {
+        		stack.push(field.clone());
+        		System.out.print("Pushed first state to stack\n");
+        	} else if (!stack.peek().equals(field.clone())) {
+        		stack.push(field.clone());
+        		System.out.print("Pushed another state to stack\n");
+        	}
         	
             int x = e.getX();
             int y = e.getY();
