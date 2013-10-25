@@ -211,7 +211,8 @@ public class Board extends JPanel {
 	
 	public void solveGame() {
 		for (int i = 0; i < field.length; i++) {
-			field[i] -= COVER_FOR_CELL;
+			if (field[i] > BIG_MINE_CELL)
+				field[i] -= COVER_FOR_CELL;
 		}
 		gameSolved = true;
 		repaint();
