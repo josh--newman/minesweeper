@@ -38,7 +38,7 @@ public class Board extends JPanel {
     private final int MEDIUM_NUM = 28;
     private final int HARD_NUM = 40;
     
-    private final int STATUS_SIZE = 60;
+    private final int STATUS_SIZE = 96;
 
     private final int COVER_FOR_CELL = 11;
     private final int MARK_FOR_CELL = 11;
@@ -67,12 +67,13 @@ public class Board extends JPanel {
     private int cols;
     private int all_cells;
     private JLabel statusbar;
+    private JLabel time;
     private Timer timer;
     private int timeElapsed = 0;
     
     private UndoRedoStack stack;
     
-    public Board(JLabel statusbar, String difficulty) {
+    public Board(JLabel statusbar, JLabel timeStatus, String difficulty) {
     	
     	// set the columns and rows to determine board size
         if (difficulty.equals("easy")) {
@@ -99,6 +100,7 @@ public class Board extends JPanel {
         timer = new Timer(TIMER_DELAY, timerListener);
     	
     	this.statusbar = statusbar;
+    	this.time = timeStatus;
 
         img = new Image[NUM_IMAGES];
 
@@ -114,7 +116,7 @@ public class Board extends JPanel {
         newGame();
     }
     
-    public Board(JLabel statusbar, int[] field, int numMines) {
+    public Board(JLabel statusbar, JLabel timeStatus, int[] field, int numMines) {
     	
     	this.field = field;
     	this.mines_left = numMines;
@@ -149,6 +151,7 @@ public class Board extends JPanel {
         timer = new Timer(TIMER_DELAY, timerListener);
     	
     	this.statusbar = statusbar;
+    	this.time = timeStatus;
 
         img = new Image[NUM_IMAGES];
 
@@ -167,7 +170,7 @@ public class Board extends JPanel {
     
     ActionListener timerListener = new ActionListener() {
     	public void actionPerformed(ActionEvent evt) {
-    		statusbar.setText(String.valueOf(timeElapsed));
+    		time.setText("Time: " + String.valueOf(timeElapsed));
     		timeElapsed++;
     	}
     };
@@ -188,7 +191,7 @@ public class Board extends JPanel {
         for (int i = 0; i < all_cells; i++)
             field[i] = COVER_FOR_CELL;
 
-        statusbar.setText(Integer.toString(mines_left));
+        statusbar.setText("Mines remaining: " + Integer.toString(mines_left));
         
         placeMines(BIG_COVERED_MINE_CELL, SMALL_COVERED_MINE_CELL, bigMines);
         placeMines(SMALL_COVERED_MINE_CELL, BIG_COVERED_MINE_CELL, smallMines);
@@ -488,14 +491,14 @@ public class Board extends JPanel {
                             if (mines_left > 0) {
                                 field[(cRow * cols) + cCol] += MARK_FOR_CELL;
                                 mines_left--;
-                                statusbar.setText(Integer.toString(mines_left));
+                                statusbar.setText("Mines remaining: " + Integer.toString(mines_left));
                             } else
                                 statusbar.setText("No marks left");
                         } else {
 
                             field[(cRow * cols) + cCol] -= MARK_FOR_CELL;
                             mines_left++;
-                            statusbar.setText(Integer.toString(mines_left));
+                            statusbar.setText("Mines remaining: " + Integer.toString(mines_left));
                         }
                     }
 
