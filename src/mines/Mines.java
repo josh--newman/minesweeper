@@ -36,7 +36,7 @@ public class Mines extends JFrame {
         add(board);
         setPreferredSize(board.getSize());
         pack();
-        setResizable(true);
+        setResizable(false);
         setVisible(true);
     }
     

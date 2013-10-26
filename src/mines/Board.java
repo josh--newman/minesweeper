@@ -8,9 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
+import java.io.IOException;
 import java.sql.Time;
-
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Stack;
@@ -28,7 +27,7 @@ public class Board extends JPanel {
 	 */
     private static final long serialVersionUID = 1L;
 	private final int NUM_IMAGES = 14;
-    private final int CELL_SIZE = 15;
+    private final int CELL_SIZE = 19;
     private final double PERCENTAGE_OF_MINES = 0.15;
     private final double PERCENTAGE_OF_BIG_MINES = 0.80;
     private final double PERCENTAGE_OF_SMALL_MINES = 0.20;
@@ -37,7 +36,7 @@ public class Board extends JPanel {
     // The number of the rows and columns for each difficulty level
     private final int EASY_NUM = 16;
     private final int MEDIUM_NUM = 28;
-    private final int HARD_NUM = 48;
+    private final int HARD_NUM = 40;
     
     private final int STATUS_SIZE = 60;
 
@@ -395,6 +394,11 @@ public class Board extends JPanel {
         if (uncover == 0 && inGame) {
             inGame = false;
             statusbar.setText("Game won");
+            try {
+            	FileManager.saveScore();
+            } catch (IOException e) {
+            	e.printStackTrace();
+            }
         } else if (!inGame && !gameSolved) {
             statusbar.setText("Game lost");
         } else if (!inGame && gameSolved) {
@@ -446,7 +450,7 @@ public class Board extends JPanel {
     class MinesAdapter extends MouseAdapter {
         public void mousePressed(MouseEvent e) {
         	
-        	stack.push(field.clone());
+        	
         	
             int x = e.getX();
             int y = e.getY();
@@ -460,6 +464,11 @@ public class Board extends JPanel {
                 newGame();
                 repaint();
             }
+            
+            if (field[(cRow * cols) + cCol] > BIG_MINE_CELL) {
+            	stack.push(field.clone());
+            	System.out.print("Pushed move to stack\n");
+            }
 
 
             if ((x < cols * CELL_SIZE) && (y < rows * CELL_SIZE)) {
@@ -469,7 +478,7 @@ public class Board extends JPanel {
                     if (field[(cRow * cols) + cCol] > BIG_MINE_CELL) {
                         rep = true;
 
-                        if (field[(cRow * cols) + cCol] <= SMALL_COVERED_MINE_CELL) {
+                        if (field[(cRow * cols) + cCol] <= BIG_COVERED_MINE_CELL) {
                             if (mines_left > 0) {
                                 field[(cRow * cols) + cCol] += MARK_FOR_CELL;
                                 mines_left--;
