@@ -1,10 +1,14 @@
 package mines;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Rectangle;
 
-
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 //import javax.swing.JMenuBar;
 
 public class Mines extends JFrame {
@@ -13,10 +17,10 @@ public class Mines extends JFrame {
 	 * 
 	 */
     private static final long serialVersionUID = 1L;
-	private final int WIDTH = 800;
-    private final int HEIGHT = 800;
 
     private JLabel statusbar;
+    private JLabel timeStatus;
+    private JPanel status;
     private Board board;
     private String difficulty = "easy";
     
@@ -28,10 +32,24 @@ public class Mines extends JFrame {
         
         setJMenuBar(Menu.create());
         
-        statusbar = new JLabel("");
-        add(statusbar, BorderLayout.SOUTH);
+        status = new JPanel();
+        status.setBackground(new Color(99,132,194));
+        status.setBorder(BorderFactory.createCompoundBorder());
         
-        board = new Board(statusbar, difficulty);
+        
+        statusbar = new JLabel("");
+        statusbar.setBorder(new EmptyBorder(5, 5, 5, 5));
+        statusbar.setForeground(Color.white);
+        timeStatus = new JLabel("");
+        timeStatus.setBorder(new EmptyBorder(5, 5, 5, 5));
+        timeStatus.setForeground(Color.white);
+        
+        status.add(statusbar);
+        status.add(timeStatus);
+        
+        add(status, BorderLayout.SOUTH);
+        
+        board = new Board(statusbar, timeStatus, difficulty);
         System.out.println("Board size: " + board.getSize());
         add(board);
         setPreferredSize(board.getSize());
@@ -43,7 +61,7 @@ public class Mines extends JFrame {
     public void newMineGame() {
     	board.getTimer().stop();
     	remove(board);
-    	board = new Board(statusbar, difficulty);
+    	board = new Board(statusbar, timeStatus, difficulty);
     	add(board);
     	setPreferredSize(board.getSize());
     	validate();
@@ -54,7 +72,7 @@ public class Mines extends JFrame {
     public void newMineGame(int[] field, int numMines) {
     	board.getTimer().stop();
     	remove(board);
-    	board = new Board(statusbar, field, numMines);
+    	board = new Board(statusbar, timeStatus, field, numMines);
     	add(board);
     	setPreferredSize(board.getSize());
     	validate();
