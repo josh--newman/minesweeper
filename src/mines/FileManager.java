@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.sql.Time;
 
+import javax.swing.JOptionPane;
+
 public class FileManager {
 	
 	private static final int NUMBER_OF_HIGH_SCORES = 5;
@@ -69,12 +71,22 @@ public class FileManager {
 		return items;
 	}
 	
-	public static void saveScore(String file, String name, int time, Date date) throws IOException {
+	public static void saveScore() throws IOException {
+		String name = getNameDialog();
 		//print score to file
+		File file = null;
+		if (CurrentGame.getCurrentGame().getDifficulty().equals("easy")) {
+			file = new File("easy_scores.txt");
+		} else if (CurrentGame.getCurrentGame().getDifficulty().equals("medium")) {
+			file = new File("medium_scores.txt");
+		} else if (CurrentGame.getCurrentGame().getDifficulty().equals("hard")) {
+			file = new File("hard_scores.txt");
+		}
+		
 		PrintWriter saveScore = new PrintWriter(new BufferedWriter(new FileWriter(file)));
 		
-		time = CurrentGame.getCurrentGame().getBoard().getTimeElapsed();
-		date = new Date();
+		int time = CurrentGame.getCurrentGame().getBoard().getTimeElapsed();
+		Date date = new Date();
 		saveScore.println(name + " " + time + " " + date);
 		
 		saveScore.flush();
@@ -95,5 +107,16 @@ public class FileManager {
 		}
 		
 		return highScores;
+	}
+
+	private static String getNameDialog() {
+		String name = (String)JOptionPane.showInputDialog(CurrentGame.getCurrentGame().getBoard(),
+                										"You won!\nPlease enter your name:\n",
+                										"Save high score",
+                										JOptionPane.PLAIN_MESSAGE,
+                										null,
+                										null,
+                										"Name");
+		return name;
 	}
 }
