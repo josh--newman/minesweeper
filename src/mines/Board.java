@@ -137,12 +137,6 @@ public class Board extends JPanel {
         	cols = HARD_NUM;
         }
         
-        // set number of mines to % based on the number of squares on the board
-//        bigMines = (int)Math.round((rows * cols) * (PERCENTAGE_OF_MINES * PERCENTAGE_OF_BIG_MINES));
-//        smallMines = (int)Math.round((rows * cols) * (PERCENTAGE_OF_MINES * PERCENTAGE_OF_SMALL_MINES));
-//        System.out.println("Number of big mines: " + bigMines);
-//        System.out.println("Number of small mines: " + smallMines);
-        
         // set the dimension of the board and extra room for the status bar
         setSize(new Dimension((cols*CELL_SIZE),(rows*CELL_SIZE) + STATUS_SIZE));
         
