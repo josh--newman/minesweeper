@@ -25,12 +25,12 @@ public class FileManager {
 		// save the difficulty of this game as a string
 		saveItems.println(difficulty);
 		
-		// print number of mines to file
+		// save number of mines to file
 		saveItems.println(numMines);
 		
-		//loop through array
+		//loop through field array
 		for (int i = 0; i < field.length; i++)
-			//print items in field array to file
+			//save items in field array to file
 		{
 			saveItems.println(field[i]);
 		}

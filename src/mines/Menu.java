@@ -2,6 +2,7 @@ package mines;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -72,6 +73,83 @@ class NewGameAction extends AbstractAction {
 	}
 }
 
+class SaveGameAction extends AbstractAction {
+	public SaveGameAction(String text) {
+		super(text);
+	}
+	public void actionPerformed(ActionEvent e) {
+		//get file chooser
+		JFileChooser chooser = new JFileChooser();
+		FileFilter ft = new FileNameExtensionFilter(".txt","txt");
+		chooser.addChoosableFileFilter(ft);
+		//open file chooser on top of current game
+		int saveWindow = chooser.showSaveDialog(CurrentGame.getCurrentGame().getBoard());
+		//ask if its OK to overwrite same named file if applicable		
+
+		if (saveWindow == JFileChooser.APPROVE_OPTION) {
+			//auto adds ".txt" to file names
+			File fileToBeSaved = chooser.getSelectedFile();
+            if (!fileToBeSaved.getAbsolutePath().endsWith(".txt")) {
+            	fileToBeSaved = new File(chooser.getSelectedFile().getAbsolutePath() + ".txt");
+            }
+            //conditions for file name already exists
+			if(chooser.getSelectedFile().exists()
+					&& chooser.getDialogType() == chooser.SAVE_DIALOG) {
+	            int result = JOptionPane.showConfirmDialog
+	            		(null,"The file exists, overwrite?",
+	            				"Existing file",JOptionPane.YES_NO_CANCEL_OPTION);
+	            switch(result) {
+	                case JOptionPane.YES_OPTION:
+	                    chooser.approveSelection();
+	                    
+	                    try {
+	    					FileManager.saveGame(fileToBeSaved,
+	    					CurrentGame.getCurrentGame().getBoard().getField(), 
+	    					CurrentGame.getCurrentGame().getBoard().getNumMines(),
+	    					CurrentGame.getCurrentGame().getDifficulty());
+	    				} catch (IOException e1) {
+	    					//catch exception
+	    					e1.printStackTrace();
+	    				}
+	                    
+	                    System.out.println("Game Saved: " +
+                    		fileToBeSaved.getAbsolutePath());
+	                    return;
+	                case JOptionPane.NO_OPTION:
+	                	System.out.println("User selected No to file overwrite");
+	                    return;
+	                case JOptionPane.CLOSED_OPTION:
+	                	System.out.println("Save file overwrite dialogue box closed");
+	                    return;
+	                case JOptionPane.CANCEL_OPTION:
+	                    chooser.cancelSelection();
+	                    System.out.println("Cancelled");
+	                    return;
+	                default:
+	                	return;
+	            }
+	        }
+			//for brand new file names
+		    chooser.approveSelection();
+		    try {
+				FileManager.saveGame(fileToBeSaved,
+				CurrentGame.getCurrentGame().getBoard().getField(), 
+				CurrentGame.getCurrentGame().getBoard().getNumMines(),
+				CurrentGame.getCurrentGame().getDifficulty());
+			} catch (IOException e1) {
+				//catch exception
+				e1.printStackTrace();
+			}
+		    System.out.println("Game Saved: " +
+	    		fileToBeSaved.getAbsolutePath());
+		}
+		//if save game window is closed
+		else {
+			System.out.println("Save game cancelled");
+		}
+    }    	
+}
+
 class LoadGameAction extends AbstractAction {
 	public LoadGameAction(String text) {
 		super(text);
@@ -88,7 +166,7 @@ class LoadGameAction extends AbstractAction {
 	    	int numMines = 0;
 	    	
 	    	try {
-				int[][] items = FileManager.loadGame(chooser.getSelectedFile().getName());
+				int[][] items = FileManager.loadGame(chooser.getSelectedFile().getAbsolutePath());
 				numMines = items[0][0];
 				field = items[1];
 				CurrentGame.getCurrentGame().newMineGame(field, numMines);
@@ -105,45 +183,9 @@ class LoadGameAction extends AbstractAction {
 	       		
 	    }
 		
-	}
-}
-
-class SaveGameAction extends AbstractAction {
-	public SaveGameAction(String text) {
-		super(text);
-	}
-	public void actionPerformed(ActionEvent e) {
-		//get file chooser
-		JFileChooser chooser = new JFileChooser();
-		FileFilter ft = new FileNameExtensionFilter(".txt",".txt");
-		chooser.addChoosableFileFilter(ft);
-		//open file chooser on top of current game
-		chooser.showSaveDialog(CurrentGame.getCurrentGame().getBoard());
-		//ask if its OK to overwrite same named file if applicable
-
-		int response = JOptionPane.showConfirmDialog(null, "Are you sure you want to override existing file?", "Confirm",
-	        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-		    if (response == JOptionPane.NO_OPTION) {
-		      System.out.println("No button clicked");
-		    } else if (response == JOptionPane.YES_OPTION) {
-		      System.out.println("Yes button clicked");
-		    } else if (response == JOptionPane.CLOSED_OPTION) {
-		      System.out.println("JOptionPane closed");
-		    } 
-
-	    //save current board state and number of mines
-		try {
-			FileManager.saveGame(chooser.getSelectedFile(),
-			CurrentGame.getCurrentGame().getBoard().getField(), 
-			CurrentGame.getCurrentGame().getBoard().getNumMines(),
-			CurrentGame.getCurrentGame().getDifficulty());
-		} catch (IOException e1) {
-			//catch exception
-			e1.printStackTrace();
-		}
-		
-		System.out.println("Game Saved: " + 
-				chooser.getSelectedFile());
+	    else {
+	    	System.out.println("Load game cancelled");
+	    }
 	}
 }
 
