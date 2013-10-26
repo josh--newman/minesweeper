@@ -38,7 +38,7 @@ public class Board extends JPanel {
     private final int MEDIUM_NUM = 28;
     private final int HARD_NUM = 40;
     
-    private final int STATUS_SIZE = 96;
+    private final int STATUS_SIZE = 80;
 
     private final int COVER_FOR_CELL = 11;
     private final int MARK_FOR_CELL = 11;
