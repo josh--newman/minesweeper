@@ -27,7 +27,7 @@ public class Board extends JPanel {
 	 */
     private static final long serialVersionUID = 1L;
 	private final int NUM_IMAGES = 14;
-    private final int CELL_SIZE = 15;
+    private final int CELL_SIZE = 19;
     private final double PERCENTAGE_OF_MINES = 0.15;
     private final double PERCENTAGE_OF_BIG_MINES = 0.80;
     private final double PERCENTAGE_OF_SMALL_MINES = 0.20;
@@ -36,7 +36,7 @@ public class Board extends JPanel {
     // The number of the rows and columns for each difficulty level
     private final int EASY_NUM = 16;
     private final int MEDIUM_NUM = 28;
-    private final int HARD_NUM = 48;
+    private final int HARD_NUM = 40;
     
     private final int STATUS_SIZE = 60;
 
