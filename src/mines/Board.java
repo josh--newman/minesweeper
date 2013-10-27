@@ -264,6 +264,7 @@ public class Board extends JPanel {
 				field[i] -= COVER_FOR_CELL;
 		}
 		gameSolved = true;
+		timer.stop();
 		
 		repaint();
 	}
