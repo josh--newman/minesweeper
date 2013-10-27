@@ -1,13 +1,11 @@
 package mines;
 
-import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
 import javax.swing.*;
-import javax.swing.event.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -83,9 +81,9 @@ class SaveGameAction extends AbstractAction {
 		FileFilter ft = new FileNameExtensionFilter(".txt","txt");
 		chooser.addChoosableFileFilter(ft);
 		//open file chooser on top of current game
-		int saveWindow = chooser.showSaveDialog(CurrentGame.getCurrentGame().getBoard());
-		//ask if its OK to overwrite same named file if applicable		
+		int saveWindow = chooser.showSaveDialog(CurrentGame.getCurrentGame().getBoard());		
 
+		//when saving a file name
 		if (saveWindow == JFileChooser.APPROVE_OPTION) {
 			//auto adds ".txt" to file names
 			File fileToBeSaved = chooser.getSelectedFile();
