@@ -20,6 +20,7 @@ public class Mines extends JFrame {
 
     private JLabel statusbar;
     private JLabel timeStatus;
+    private JLabel chances;
     private JPanel status;
     private Board board;
     private String difficulty = "easy";
@@ -43,13 +44,17 @@ public class Mines extends JFrame {
         timeStatus = new JLabel("");
         timeStatus.setBorder(new EmptyBorder(5, 5, 5, 5));
         timeStatus.setForeground(Color.white);
+        chances = new JLabel("");
+        chances.setBorder(new EmptyBorder(5, 5, 5, 5));
+        chances.setForeground(Color.white);
         
         status.add(statusbar);
         status.add(timeStatus);
+        status.add(chances);
         
         add(status, BorderLayout.SOUTH);
         
-        board = new Board(statusbar, timeStatus, difficulty);
+        board = new Board(statusbar, timeStatus, chances, difficulty);
         System.out.println("Board size: " + board.getSize());
         add(board);
         setPreferredSize(board.getSize());
@@ -61,7 +66,7 @@ public class Mines extends JFrame {
     public void newMineGame() {
     	board.getTimer().stop();
     	remove(board);
-    	board = new Board(statusbar, timeStatus, difficulty);
+    	board = new Board(statusbar, timeStatus, chances, difficulty);
     	add(board);
     	setPreferredSize(board.getSize());
     	validate();
@@ -72,7 +77,7 @@ public class Mines extends JFrame {
     public void newMineGame(int[] field, int numMines) {
     	board.getTimer().stop();
     	remove(board);
-    	board = new Board(statusbar, timeStatus, field, numMines);
+    	board = new Board(statusbar, timeStatus, chances, field, numMines);
     	add(board);
     	setPreferredSize(board.getSize());
     	validate();

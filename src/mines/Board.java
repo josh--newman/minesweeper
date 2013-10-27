@@ -68,12 +68,13 @@ public class Board extends JPanel {
     private int all_cells;
     private JLabel statusbar;
     private JLabel time;
+    private JLabel chances;
     private Timer timer;
     private int timeElapsed = 0;
     
     private UndoRedoStack stack;
     
-    public Board(JLabel statusbar, JLabel timeStatus, String difficulty) {
+    public Board(JLabel statusbar, JLabel timeStatus, JLabel chances, String difficulty) {
     	
     	// set the columns and rows to determine board size
         if (difficulty.equals("easy")) {
@@ -101,6 +102,7 @@ public class Board extends JPanel {
     	
     	this.statusbar = statusbar;
     	this.time = timeStatus;
+    	this.chances = chances; 
 
         img = new Image[NUM_IMAGES];
 
@@ -116,7 +118,7 @@ public class Board extends JPanel {
         newGame();
     }
     
-    public Board(JLabel statusbar, JLabel timeStatus, int[] field, int numMines) {
+    public Board(JLabel statusbar, JLabel timeStatus, JLabel chances, int[] field, int numMines) {
     	
     	this.field = field;
     	this.mines_left = numMines;
@@ -146,6 +148,7 @@ public class Board extends JPanel {
     	
     	this.statusbar = statusbar;
     	this.time = timeStatus;
+    	this.chances = chances;
 
         img = new Image[NUM_IMAGES];
 
@@ -184,8 +187,9 @@ public class Board extends JPanel {
         
         for (int i = 0; i < all_cells; i++)
             field[i] = COVER_FOR_CELL;
-
-        statusbar.setText("Mines remaining: " + Integer.toString(mines_left));
+        
+        statusbar.setText("Mines: " + Integer.toString(mines_left));
+        chances.setText("Chances left: " + Integer.toString(chancesLeft));
         
         placeMines(BIG_COVERED_MINE_CELL, SMALL_COVERED_MINE_CELL, bigMines);
         placeMines(SMALL_COVERED_MINE_CELL, BIG_COVERED_MINE_CELL, smallMines);
@@ -485,14 +489,14 @@ public class Board extends JPanel {
                             if (mines_left > 0) {
                                 field[(cRow * cols) + cCol] += MARK_FOR_CELL;
                                 mines_left--;
-                                statusbar.setText("Mines remaining: " + Integer.toString(mines_left));
+                                statusbar.setText("Mines: " + Integer.toString(mines_left));
                             } else
                                 statusbar.setText("No marks left");
                         } else {
 
                             field[(cRow * cols) + cCol] -= MARK_FOR_CELL;
                             mines_left++;
-                            statusbar.setText("Mines remaining: " + Integer.toString(mines_left));
+                            statusbar.setText("Mines: " + Integer.toString(mines_left));
                         }
                     }
 
@@ -512,6 +516,7 @@ public class Board extends JPanel {
                             inGame = false;
                         if (field[(cRow * cols) + cCol] == SMALL_MINE_CELL) {
                             chancesLeft--;
+                            chances.setText("Chances left: " + Integer.toString(chancesLeft));
                         	if (chancesLeft == 0)
                         		inGame = false;
                         }
