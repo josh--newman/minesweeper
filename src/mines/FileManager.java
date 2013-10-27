@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 import java.util.List;
@@ -47,6 +48,7 @@ public class FileManager {
 		File file = new File(filename);
 		Scanner fileReader = new Scanner(file);
 		
+		//load in the difficulty of the saved game
 		int[] field = {};
 		String diff = fileReader.nextLine();
 		if (diff.equals("easy")) {
@@ -57,16 +59,18 @@ public class FileManager {
 			field = new int[NUM_HARD_CELLS];
 		}
 		
+		//number of mines array
 		int[] numMines = new int[1];
 		numMines[0] = fileReader.nextInt();
 		
-		
+		//load the saved state of board 
 		int i = 0;
 		while (fileReader.hasNextInt()) {
 			field[i] = fileReader.nextInt();
 			i++;
 		}
 		
+		//2D array of number of mines and state of board
 		int[][] items = {numMines, field};
 		return items;
 	}
@@ -85,9 +89,12 @@ public class FileManager {
 		
 		PrintWriter saveScore = new PrintWriter(new BufferedWriter(new FileWriter(file)));
 		
+		//get name, current time and date(change to String DD/MM/YYYY format)
 		int time = CurrentGame.getCurrentGame().getBoard().getTimeElapsed();
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy"); 
 		Date date = new Date();
-		saveScore.println(name + " " + time + " " + date);
+		String dateString = sdf.format(date);
+		saveScore.println(name + " " + time + " " + dateString);
 		
 		saveScore.flush();
 		saveScore.close();
@@ -108,15 +115,16 @@ public class FileManager {
 		
 		return highScores;
 	}
-
+	
+	//high scores save dialogue box
 	private static String getNameDialog() {
 		String name = (String)JOptionPane.showInputDialog(CurrentGame.getCurrentGame().getBoard(),
-                										"You won!\nPlease enter your name:\n",
-                										"Save high score",
-                										JOptionPane.PLAIN_MESSAGE,
-                										null,
-                										null,
-                										"Name");
+		"You won!\nPlease enter your name:\n",
+		"Save high score",
+		JOptionPane.PLAIN_MESSAGE,
+		null,
+		null,
+		"Name");
 		return name;
 	}
 }
