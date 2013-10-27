@@ -192,6 +192,7 @@ public class Board extends JPanel {
         
     }
 	
+	//places the mines randomly according the board size
 	private void placeMines(int COVERED_MINE_CELL, int OTHER, int numMines) {
 		int i = 0;
         int position = 0;
@@ -256,6 +257,7 @@ public class Board extends JPanel {
         }
 	}
 	
+	//solve game method
 	public void solveGame() {
 		for (int i = 0; i < field.length; i++) {
 			if (field[i] > BIG_MINE_CELL)
@@ -266,6 +268,7 @@ public class Board extends JPanel {
 		repaint();
 	}
 	
+	//method for finding empty cells
     public void find_empty_cells(int j) {
 
         int current_col = j % cols;
@@ -345,9 +348,6 @@ public class Board extends JPanel {
 
         int cell = 0;
         int uncover = 0;
-        
-//        System.out.println("FIELD BEFORE PAINT: " + Arrays.toString(field));
-//        System.out.println("inGame before 2mine check: " + inGame);
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
@@ -375,7 +375,6 @@ public class Board extends JPanel {
                         cell = DRAW_COVER;
                     }
 
-
                 } else {
                     if (cell > BIG_COVERED_MINE_CELL)
                         cell = DRAW_MARK;
@@ -389,7 +388,7 @@ public class Board extends JPanel {
                     (i * CELL_SIZE), this);
             }
         }
-//        System.out.println("inGame after 2mine check: " + inGame);
+
         System.out.println("chancesLeft: " + chancesLeft);
         System.out.println("FIELD AFTER PAINT: " + Arrays.toString(field));
 
