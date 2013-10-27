@@ -96,8 +96,8 @@ class SaveGameAction extends AbstractAction {
             	fileToBeSaved = new File(chooser.getSelectedFile().getAbsolutePath() + ".txt");
             }
             //conditions for file name already exists
-			if(chooser.getSelectedFile().exists()
-					&& chooser.getDialogType() == chooser.SAVE_DIALOG) {
+			if(fileToBeSaved.exists() && chooser.getDialogType() == chooser.SAVE_DIALOG && 
+					fileToBeSaved.getAbsolutePath().endsWith(".txt")){
 	            int result = JOptionPane.showConfirmDialog
 	            		(null,"The file exists, overwrite?",
 	            				"Existing file",JOptionPane.YES_NO_CANCEL_OPTION);
